@@ -6,7 +6,7 @@ coffee_amount=resources['coffee']
 money_inn=0
 machine_on=True
 milk_to_use=water_to_use=coffee_to_use=0
-coffee_to_dispach=True
+coffee_to_dispach=False
 
 def resources_to_use(type):
     """Take the order form user and return resources to be used"""
@@ -26,9 +26,9 @@ def stock_remain(milk,water,coffee,money):
     """Tell the user how much resources are left"""
     global milk_amount,coffee_amount,water_amount,money_inn
     money=money_inn
-    milk_amount=milk_amount-milk
-    water_amount=water_amount-water
-    coffee_amount=coffee_amount-coffee
+    milk=milk_amount-milk
+    water=water_amount-water
+    coffee=coffee_amount-coffee
     return (f"Water: {water}ml\n Milk: {milk}ml \nCoffee: {coffee}g \n Money: ${money}")
 
 def stock_check(milk,water,coffee):
@@ -45,7 +45,7 @@ def stock_check(milk,water,coffee):
         return("Sorry there is not enough coffee.")
     else:
         coffee_to_dispach=True
-        return 
+ 
 
 
 def input_money():
@@ -66,26 +66,38 @@ def change_calc(money,type):
     if money>MENU[type]["cost"] or money==MENU[type]["cost"]:
         change=money-MENU[type]["cost"]
         money_inn-=change
-        return(f" Here is ${change} in change.\n Here is your espresso ☕️. Enjoy!")
+        return(f" Here is ${change} in change.\n Here is your {type} ☕️. Enjoy!")
     else:
         coffee_to_dispach=False
         return("Sorry that's not enough money. Money refunded.")  
 
 while machine_on:
+    coffee_to_dispach=False
+    total_money=money_inn
     order=input(" What would you like? (espresso/latte/cappuccino) : ").lower()
     if order=="report":
-        print(stock_remain(milk=milk_to_use,water=water_to_use,coffee=coffee_to_use,money=money_inn))
+        print(stock_remain(milk=milk_to_use,water=water_to_use,coffee=coffee_to_use,money=total_money))
+    elif order=="off":
+        machine_on=False
     else:
         milk_to_use,water_to_use,coffee_to_use=resources_to_use(order)
-
-    print(stock_check(milk=milk_to_use,water=water_to_use,coffee=coffee_to_use))
-    if coffee_to_dispach:
-        if order=="off":
-            machine_on=False
-        else:
-            if coffee_to_dispach:
-                money_paid=input_money()
-                print(change_calc(money=money_paid,type=order))
-                stock_remain(milk=milk_to_use,water=water_to_use,coffee=coffee_to_use,money=money_inn)
+    
+    if order!="report":
+        check=stock_check(milk=milk_to_use,water=water_to_use,coffee=coffee_to_use)
+        if check!="None":
+            print(check)
+        if coffee_to_dispach:
+            if order=="off":
+                machine_on=False
+            else:
+                if coffee_to_dispach:
+                    money_paid=input_money()
+                    print(change_calc(money=money_paid,type=order))
+                    water_amount,milk_amount,coffee_amount,total_money=stock_remain(milk=milk_to_use,water=water_to_use,coffee=coffee_to_use,money=money_inn).split("")
         
             
+
+
+
+
+    
