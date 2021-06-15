@@ -11,6 +11,7 @@ class Snake :
         self.all_segments=[]
         self.creat_snake()
         self.head=self.all_segments[0]
+        self.head.color("purple")
         
         
     def creat_snake(self):
