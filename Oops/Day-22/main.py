@@ -14,6 +14,7 @@ tim=Turtle()
 screen.title("Pong Game")
 screen.setup(width=800, height=600)
 screen.bgcolor("black")
+screen.tracer(0)
 tim.pencolor("white")
 tim.speed(0)
 tim. penup()
@@ -25,7 +26,6 @@ for _ in range(1,20):
     tim.penup()
     tim.fd(20)
 
-screen.tracer(0)
 
 r_paddle=Paddle(x_pos=380,y_pos=0)
 l_paddle=Paddle(x_pos=-390,y_pos=0)
